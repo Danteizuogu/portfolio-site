@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Box, Heading, Text, VStack, Input, Textarea, Button, useToast, FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/react'
+import { Box, Heading, VStack, Input, Textarea, Button, useToast, FormControl, FormLabel, FormErrorMessage, Grid, GridItem, Text, Divider, HStack, Link } from '@chakra-ui/react'
+import { FaXTwitter, FaLinkedin, FaReddit, FaGithub, FaQuora, FaFacebook } from 'react-icons/fa6'
 import emailjs from '@emailjs/browser'
 
 const Contact = () => {
@@ -104,71 +105,129 @@ const Contact = () => {
     }
   }
 
+  const socialLinks = [
+    { icon: FaXTwitter, url: 'https://twitter.com/yourusername', label: 'Twitter', username: '@yourusername' },
+    { icon: FaLinkedin, url: 'https://linkedin.com/in/yourusername', label: 'LinkedIn', username: 'yourusername' },
+    { icon: FaReddit, url: 'https://reddit.com/user/yourusername', label: 'Reddit', username: 'u/yourusername' },
+    { icon: FaGithub, url: 'https://github.com/yourusername', label: 'GitHub', username: '@yourusername' },
+    { icon: FaQuora, url: 'https://quora.com/profile/yourusername', label: 'Quora', username: 'yourusername' },
+    { icon: FaFacebook, url: 'https://facebook.com/yourusername', label: 'Facebook', username: 'yourusername' }
+  ]
+
   return (
-    <Box maxW="600px" mx="auto" py={8}>
+    <Box py={8}>
       <Heading color="brand.dark" mb={8}>Contact Me</Heading>
       
-      <form onSubmit={handleSubmit}>
-        <VStack spacing={6}>
-          <FormControl isRequired isInvalid={!!errors.name}>
-            <FormLabel>Name</FormLabel>
-            <Input
-              value={formData.name}
-              onChange={(e) => {
-                setFormData({ ...formData, name: e.target.value })
-                setErrors({ ...errors, name: '' })
-              }}
-              borderColor="brand.medium"
-              _hover={{ borderColor: 'brand.dark' }}
-              _focus={{ borderColor: 'brand.dark', boxShadow: '0 0 0 1px var(--chakra-colors-brand-dark)' }}
-            />
-            <FormErrorMessage>{errors.name}</FormErrorMessage>
-          </FormControl>
+      <Grid templateColumns={{ base: '1fr', md: '1fr 1px 1fr' }} gap={12}>
+        {/* Contact Form */}
+        <GridItem>
+          <form onSubmit={handleSubmit}>
+            <VStack spacing={6}>
+              <FormControl isRequired isInvalid={!!errors.name}>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => {
+                    setFormData({ ...formData, name: e.target.value })
+                    setErrors({ ...errors, name: '' })
+                  }}
+                  borderColor="brand.medium"
+                  _hover={{ borderColor: 'brand.dark' }}
+                  _focus={{ borderColor: 'brand.dark', boxShadow: '0 0 0 1px var(--chakra-colors-brand-dark)' }}
+                />
+                <FormErrorMessage>{errors.name}</FormErrorMessage>
+              </FormControl>
 
-          <FormControl isRequired isInvalid={!!errors.email}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              value={formData.email}
-              onChange={(e) => {
-                setFormData({ ...formData, email: e.target.value })
-                setErrors({ ...errors, email: '' })
-              }}
-              borderColor="brand.medium"
-              _hover={{ borderColor: 'brand.dark' }}
-              _focus={{ borderColor: 'brand.dark', boxShadow: '0 0 0 1px var(--chakra-colors-brand-dark)' }}
-            />
-            <FormErrorMessage>{errors.email}</FormErrorMessage>
-          </FormControl>
+              <FormControl isRequired isInvalid={!!errors.email}>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => {
+                    setFormData({ ...formData, email: e.target.value })
+                    setErrors({ ...errors, email: '' })
+                  }}
+                  borderColor="brand.medium"
+                  _hover={{ borderColor: 'brand.dark' }}
+                  _focus={{ borderColor: 'brand.dark', boxShadow: '0 0 0 1px var(--chakra-colors-brand-dark)' }}
+                />
+                <FormErrorMessage>{errors.email}</FormErrorMessage>
+              </FormControl>
 
-          <FormControl isRequired isInvalid={!!errors.message}>
-            <FormLabel>Message</FormLabel>
-            <Textarea
-              value={formData.message}
-              onChange={(e) => {
-                setFormData({ ...formData, message: e.target.value })
-                setErrors({ ...errors, message: '' })
-              }}
-              rows={6}
-              borderColor="brand.medium"
-              _hover={{ borderColor: 'brand.dark' }}
-              _focus={{ borderColor: 'brand.dark', boxShadow: '0 0 0 1px var(--chakra-colors-brand-dark)' }}
-            />
-            <FormErrorMessage>{errors.message}</FormErrorMessage>
-          </FormControl>
+              <FormControl isRequired isInvalid={!!errors.message}>
+                <FormLabel>Message</FormLabel>
+                <Textarea
+                  value={formData.message}
+                  onChange={(e) => {
+                    setFormData({ ...formData, message: e.target.value })
+                    setErrors({ ...errors, message: '' })
+                  }}
+                  rows={6}
+                  borderColor="brand.medium"
+                  _hover={{ borderColor: 'brand.dark' }}
+                  _focus={{ borderColor: 'brand.dark', boxShadow: '0 0 0 1px var(--chakra-colors-brand-dark)' }}
+                />
+                <FormErrorMessage>{errors.message}</FormErrorMessage>
+              </FormControl>
 
-          <Button
-            type="submit"
-            isLoading={isLoading}
-            bg="brand.medium"
-            color="white"
-            _hover={{ bg: 'brand.dark' }}
-            w="full"
-          >
-            Send Message
-          </Button>
-        </VStack>
-      </form>
+              <Button
+                type="submit"
+                isLoading={isLoading}
+                bg="brand.medium"
+                color="white"
+                _hover={{ bg: 'brand.dark' }}
+                w="full"
+              >
+                Send Message
+              </Button>
+            </VStack>
+          </form>
+        </GridItem>
+
+        {/* Divider */}
+        <GridItem>
+          <Divider orientation="vertical" borderColor="brand.light" />
+        </GridItem>
+
+        {/* Social Links */}
+        <GridItem>
+          <VStack spacing={8} align="start">
+            <Box>
+              <Text fontSize="lg" fontWeight="medium" mb={2}>Connect with me</Text>
+              <Text color="brand.dark" fontSize="md">
+                dante.izuogu@proton.me
+              </Text>
+            </Box>
+            
+            <VStack spacing={6} align="start" w="100%">
+              {socialLinks.map((social) => (
+                <Link
+                  key={social.label}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  color="brand.dark"
+                  _hover={{ color: 'brand.medium' }}
+                  display="flex"
+                  alignItems="center"
+                  gap={3}
+                  textDecoration="none"
+                >
+                  <social.icon size={24} />
+                  <Box>
+                    <Text fontSize="sm" color="brand.dark" fontWeight="medium">
+                      {social.label}
+                    </Text>
+                    <Text fontSize="sm" color="brand.dark" opacity={0.7}>
+                      {social.username}
+                    </Text>
+                  </Box>
+                </Link>
+              ))}
+            </VStack>
+          </VStack>
+        </GridItem>
+      </Grid>
     </Box>
   )
 }
