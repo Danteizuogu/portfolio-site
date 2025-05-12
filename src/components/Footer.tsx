@@ -38,6 +38,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               color="brand.dark"
               _hover={{ color: 'brand.medium' }}
+              className="social-link"
             >
               <social.icon size={18} />
             </Link>

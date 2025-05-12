@@ -40,7 +40,7 @@ const theme = extendTheme({
         minHeight: '100vh',
         width: '100%',
       },
-      'a:not(.navbar-name)': {
+      'a:not(.social-link)': {
         position: 'relative',
         textDecoration: 'none',
         '&::after': {
@@ -57,10 +57,10 @@ const theme = extendTheme({
           width: '100%',
         },
       },
-      '.navbar-name': {
-        textDecoration: 'none',
+      '.social-link': {
+        textDecoration: 'none !important',
         '&:hover': {
-          color: 'var(--chakra-colors-brand-medium)',
+          textDecoration: 'none !important',
         },
       },
     },

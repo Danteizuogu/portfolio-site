@@ -211,6 +211,7 @@ const Contact = () => {
                   display="flex"
                   alignItems="center"
                   gap={3}
+                  className="social-link"
                 >
                   <social.icon size={24} />
                   <Box>
