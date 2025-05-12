@@ -9,10 +9,9 @@ const theme = extendTheme({
   config,
   colors: {
     brand: {
-      light: '#F8E7F6',
-      medium: '#DD88CF',
-      dark: '#4B164C',
-      white: '#F5F5F5',
+      background: '#000000',
+      text: '#FFFFFF',
+      accent: '#39FF14', // Neon green
     },
   },
   fonts: {
@@ -22,13 +21,22 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: 'brand.white',
-        color: 'brand.dark',
+        bg: 'brand.background',
+        color: 'brand.text',
         minHeight: '100vh',
         width: '100vw',
         margin: 0,
         padding: 0,
         overflowX: 'hidden',
+      },
+      a: {
+        color: 'brand.text',
+        textDecoration: 'underline',
+        textDecorationColor: 'brand.accent',
+        _hover: {
+          color: 'brand.accent',
+          textDecoration: 'none',
+        },
       },
       html: {
         height: '100%',

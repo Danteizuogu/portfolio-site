@@ -15,26 +15,39 @@ const Navbar = () => {
           to="/" 
           fontSize="xl" 
           fontWeight="bold" 
-          color="brand.dark"
-          _hover={{ color: 'brand.medium' }}
+          color="brand.text"
+          _hover={{ color: 'brand.accent' }}
+          transition="color 0.2s"
         >
-          Dante <Box as="span" color="brand.medium">Izuogu</Box>
+          Dante <Box as="span" _hover={{ color: 'brand.accent' }}>Izuogu</Box>
         </Link>
         <Spacer />
         <Flex gap={8}>
           <Link 
             as={RouterLink} 
             to="/portfolio" 
-            color="brand.dark"
-            _hover={{ color: 'brand.medium' }}
+            color="brand.text"
+            textDecoration="none"
+            borderBottom="2px solid transparent"
+            _hover={{ 
+              color: 'brand.accent',
+              borderBottom: '2px solid',
+              borderColor: 'brand.accent'
+            }}
           >
             Portfolio
           </Link>
           <Link 
             as={RouterLink} 
             to="/contact" 
-            color="brand.dark"
-            _hover={{ color: 'brand.medium' }}
+            color="brand.text"
+            textDecoration="none"
+            borderBottom="2px solid transparent"
+            _hover={{ 
+              color: 'brand.accent',
+              borderBottom: '2px solid',
+              borderColor: 'brand.accent'
+            }}
           >
             Contact
           </Link>
