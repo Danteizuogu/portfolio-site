@@ -9,12 +9,11 @@ const Home = () => {
           fontWeight="bold"
           fontFamily="heading"
         >
-          Dante <Box as="span" color="brand.medium">Izuogu</Box>
+          Building Digital <Box as="span" color="brand.medium">Experiences.</Box>
         </Heading>
         
         <Text fontSize="xl" maxW="600px" lineHeight="1.6">
-          Full-stack developer crafting elegant solutions to complex problems.
-          Specializing in modern web technologies and user-centric design.
+          Student at Cambridge Maths School, studying Computer Science and Mathematics in the hopes of becoming a software engineer.
         </Text>
 
         <HStack spacing={4} pt={4}>

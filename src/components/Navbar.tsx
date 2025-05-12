@@ -20,7 +20,7 @@ const Navbar = () => {
           color="brand.dark"
           _hover={{ color: 'brand.medium' }}
         >
-          Your Name
+          Dante <Box as="span" color="brand.medium">Izuogu</Box>
         </Link>
         <Spacer />
         <Flex gap={8}>
