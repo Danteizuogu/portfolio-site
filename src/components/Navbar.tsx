@@ -5,11 +5,9 @@ const Navbar = () => {
   return (
     <Box 
       as="nav" 
-      bg="brand.white" 
+      bg="transparent" 
       px={8} 
-      py={4} 
-      borderBottom="1px" 
-      borderColor="brand.light"
+      py={4}
     >
       <Flex align="center">
         <Link 

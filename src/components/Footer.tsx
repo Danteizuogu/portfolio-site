@@ -16,15 +16,20 @@ const Footer = () => {
       as="footer" 
       bg="brand.white" 
       px={8} 
-      py={4} 
+      py={3} 
       borderTop="1px" 
       borderColor="brand.light"
     >
-      <Flex align="center" justify="space-between">
-        <Text color="brand.dark">
+      <Flex 
+        align="center" 
+        justify="center" 
+        direction={{ base: 'column', sm: 'row' }}
+        gap={{ base: 2, sm: 8 }}
+      >
+        <Text color="brand.dark" fontSize="sm">
           dante.izuogu@proton.me
         </Text>
-        <HStack spacing={4}>
+        <HStack spacing={6}>
           {socialLinks.map((social) => (
             <Link
               key={social.label}
@@ -34,7 +39,7 @@ const Footer = () => {
               color="brand.dark"
               _hover={{ color: 'brand.medium' }}
             >
-              <social.icon size={20} />
+              <social.icon size={18} />
             </Link>
           ))}
         </HStack>
