@@ -40,6 +40,29 @@ const theme = extendTheme({
         minHeight: '100vh',
         width: '100%',
       },
+      'a:not(.navbar-name)': {
+        position: 'relative',
+        textDecoration: 'none',
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          width: '0',
+          height: '2px',
+          bottom: '-2px',
+          left: '0',
+          backgroundColor: 'var(--chakra-colors-brand-medium)',
+          transition: 'width 0.3s ease-in-out',
+        },
+        '&:hover::after': {
+          width: '100%',
+        },
+      },
+      '.navbar-name': {
+        textDecoration: 'none',
+        '&:hover': {
+          color: 'var(--chakra-colors-brand-medium)',
+        },
+      },
     },
   },
 })
