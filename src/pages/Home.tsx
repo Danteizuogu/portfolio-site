@@ -1,4 +1,4 @@
-import { Box, Heading, Text, Flex, VStack, HStack } from '@chakra-ui/react'
+import { Box, Heading, Text, Flex, VStack, HStack, Link } from '@chakra-ui/react'
 
 const Home = () => {
   return (
@@ -26,26 +26,30 @@ const Home = () => {
         </Text>
 
         <HStack spacing={4} pt={4}>
-          <Box 
-            p={4} 
-            border="2px" 
-            borderColor="brand.medium" 
-            borderRadius="md"
-            _hover={{ bg: 'brand.light' }}
-            transition="all 0.2s"
-          >
-            <Text>View Projects</Text>
-          </Box>
-          <Box 
-            p={4} 
-            border="2px" 
-            borderColor="brand.dark" 
-            borderRadius="md"
-            _hover={{ bg: 'brand.light' }}
-            transition="all 0.2s"
-          >
-            <Text>Contact Me</Text>
-          </Box>
+          <Link href="/portfolio" style={{ textDecoration: 'none' }}>
+            <Box 
+              p={4} 
+              border="2px" 
+              borderColor="brand.medium" 
+              borderRadius="md"
+              _hover={{ bg: 'brand.light', borderColor: 'brand.accent', color: 'brand.accent' }}
+              transition="all 0.2s"
+            >
+              <Text>View Projects</Text>
+            </Box>
+          </Link>
+          <Link href="/contact" style={{ textDecoration: 'none' }}>
+            <Box 
+              p={4} 
+              border="2px" 
+              borderColor="brand.dark" 
+              borderRadius="md"
+              _hover={{ bg: 'brand.light', borderColor: 'brand.accent', color: 'brand.accent' }}
+              transition="all 0.2s"
+            >
+              <Text>Contact Me</Text>
+            </Box>
+          </Link>
         </HStack>
       </VStack>
     </Box>

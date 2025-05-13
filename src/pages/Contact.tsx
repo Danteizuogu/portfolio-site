@@ -133,7 +133,7 @@ const Contact = () => {
                   }}
                   borderColor="brand.medium"
                   _hover={{ borderColor: 'brand.dark' }}
-                  _focus={{ borderColor: 'brand.dark', boxShadow: '0 0 0 1px var(--chakra-colors-brand-dark)' }}
+                  _focus={{ borderColor: 'brand.accent', boxShadow: '0 0 0 1px var(--chakra-colors-brand-accent)' }}
                 />
                 <FormErrorMessage>{errors.name}</FormErrorMessage>
               </FormControl>
@@ -149,7 +149,7 @@ const Contact = () => {
                   }}
                   borderColor="brand.medium"
                   _hover={{ borderColor: 'brand.dark' }}
-                  _focus={{ borderColor: 'brand.dark', boxShadow: '0 0 0 1px var(--chakra-colors-brand-dark)' }}
+                  _focus={{ borderColor: 'brand.accent', boxShadow: '0 0 0 1px var(--chakra-colors-brand-accent)' }}
                 />
                 <FormErrorMessage>{errors.email}</FormErrorMessage>
               </FormControl>
@@ -165,7 +165,7 @@ const Contact = () => {
                   rows={6}
                   borderColor="brand.medium"
                   _hover={{ borderColor: 'brand.dark' }}
-                  _focus={{ borderColor: 'brand.dark', boxShadow: '0 0 0 1px var(--chakra-colors-brand-dark)' }}
+                  _focus={{ borderColor: 'brand.accent', boxShadow: '0 0 0 1px var(--chakra-colors-brand-accent)' }}
                 />
                 <FormErrorMessage>{errors.message}</FormErrorMessage>
               </FormControl>
@@ -173,9 +173,12 @@ const Contact = () => {
               <Button
                 type="submit"
                 isLoading={isLoading}
-                bg="brand.medium"
-                color="white"
-                _hover={{ bg: 'brand.dark' }}
+                p={4}
+                border="2px"
+                borderColor="brand.dark"
+                borderRadius="md"
+                _hover={{ bg: 'brand.light', borderColor: 'brand.accent', color: 'brand.accent' }}
+                transition="all 0.2s"
                 w="full"
               >
                 Send Message
@@ -191,7 +194,7 @@ const Contact = () => {
 
         {/* Social Links */}
         <GridItem>
-          <VStack spacing={8} align="start">
+          <VStack spacing={24} align="start">
             <Box>
               <Text fontSize="lg" fontWeight="medium" mb={2}>Connect with me</Text>
               <Text color="brand.dark" fontSize="md">
@@ -216,9 +219,6 @@ const Contact = () => {
                   <social.icon size={24} />
                   <Box>
                     <Text fontSize="sm" color="brand.dark" fontWeight="medium">
-                      {social.label}
-                    </Text>
-                    <Text fontSize="sm" color="brand.dark" opacity={0.7}>
                       {social.username}
                     </Text>
                   </Box>
