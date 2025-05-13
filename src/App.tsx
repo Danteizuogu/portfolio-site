@@ -5,7 +5,7 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import Portfolio from './pages/Portfolio'
 import Contact from './pages/Contact'
-import GradientBackground from './components/GradientBackground'
+import AnimatedBackground from './components/AnimatedBackground'
 
 function App() {
   return (
@@ -13,14 +13,36 @@ function App() {
       minH="100vh" 
       w="100vw" 
       position="relative"
-      overflow="hidden"
-      bg="transparent"
+      overflowX="hidden"
+      bg="black"
     >
-      <GradientBackground />
+      {/* Background - fixed and interactive */}
+      <AnimatedBackground />
       
-      <Box position="relative" zIndex="2">
+      {/* Content */}
+      <Box 
+        position="relative" 
+        zIndex={1} 
+        bg="transparent"
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         <Navbar />
-        <Box px={8} py={8} w="100%">
+        <Box 
+          as="main"
+          flex={1}
+          px={8} 
+          py={8} 
+          w="100%" 
+          position="relative"
+          zIndex={1}
+          bg="transparent"
+        >
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/portfolio" element={<Portfolio />} />
