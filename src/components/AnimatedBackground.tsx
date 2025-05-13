@@ -4,26 +4,21 @@ import { useEffect, useRef } from 'react';
 const AnimatedBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointsRef = useRef<{ x: number; y: number; opacity: number }[]>([]);
-  const activeNodeRef = useRef<number | null>(null);
+  const activeNodesRef = useRef<Set<number>>(new Set());
 
-  const gridSize = 35;
-  const nodeColor = 'rgba(128, 128, 128, 0.3)'; // Grey
-  const highlightColor = 'rgba(57, 255, 20, 1)'; // Neon green
+  const totalNodes = 100;
+  const nodeColor = 'rgba(128, 128, 128, 0.3)';
+  const highlightColor = 'rgba(57, 255, 20, 1)';
 
-  const initPoints = (width: number, height: number) => {
-    const cols = Math.floor(width / gridSize);
-    const rows = Math.floor(height / gridSize);
-    pointsRef.current = [];
+  const initPoints = () => {
+    pointsRef.current = Array.from({ length: totalNodes }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      opacity: Math.random() * 0.7 + 0.3,
+    }));
 
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        pointsRef.current.push({
-          x: j * gridSize,
-          y: i * gridSize,
-          opacity: 0.3,
-        });
-      }
-    }
+
+
   };
 
   const draw = () => {
@@ -36,28 +31,38 @@ const AnimatedBackground = () => {
 
     pointsRef.current.forEach((point, index) => {
       ctx.beginPath();
-      ctx.fillStyle =
-        index === activeNodeRef.current ? highlightColor : nodeColor;
+      ctx.fillStyle = activeNodesRef.current.has(index)
+        ? highlightColor
+        : nodeColor;
       ctx.globalAlpha = point.opacity;
       ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
       ctx.fill();
     });
 
-    if (activeNodeRef.current !== null) {
-      pointsRef.current[activeNodeRef.current].opacity -= 0.01;
-      if (pointsRef.current[activeNodeRef.current].opacity <= 0.3) {
-        pointsRef.current[activeNodeRef.current].opacity = 0.3;
-        activeNodeRef.current = null;
+    activeNodesRef.current.forEach((index) => {
+      pointsRef.current[index].opacity -= 0.01;
+      if (pointsRef.current[index].opacity <= 0.3) {
+        pointsRef.current[index].opacity = 0.3;
+        activeNodesRef.current.delete(index);
       }
-    }
+    });
 
     requestAnimationFrame(draw);
   };
 
-  const activateRandomNode = () => {
+  const activateRandomNodes = () => {
+    const randomIndices = Array.from({ length: 5 }, () => Math.floor(Math.random() * pointsRef.current.length));
+    randomIndices.forEach(index => {
+      if (pointsRef.current[index]) {
+        activeNodesRef.current.add(index);
+        pointsRef.current[index].opacity = 1;
+      }
+    });
     const randomIndex = Math.floor(Math.random() * pointsRef.current.length);
-    activeNodeRef.current = randomIndex;
-    pointsRef.current[randomIndex].opacity = 1;
+    if (pointsRef.current[randomIndex]) {
+      activeNodesRef.current.add(randomIndex);
+      pointsRef.current[randomIndex].opacity = 1;
+    }
   };
 
   useEffect(() => {
@@ -68,15 +73,26 @@ const AnimatedBackground = () => {
     canvas.width = width;
     canvas.height = height;
 
-    initPoints(width, height);
+    initPoints();
     draw();
 
-    const intervalId = setInterval(activateRandomNode, 2000);
+    const intervalId = setInterval(activateRandomNodes, 2000);
 
     return () => clearInterval(intervalId);
   }, []);
 
-  return <Box as="canvas" ref={canvasRef} position="fixed" top={0} left={0} width="100%" height="100%" zIndex={0} />;
+  return (
+    <Box
+      as="canvas"
+      ref={canvasRef}
+      position="fixed"
+      top={0}
+      left={0}
+      width="100vw"
+      height="100vh"
+      zIndex={0}
+    />
+  );
 };
 
 export default AnimatedBackground;
