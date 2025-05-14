@@ -19,7 +19,7 @@ const Navbar = () => {
           _hover={{ color: 'brand.accent' }}
           transition="color 0.2s"
         >
-          Dante Izuogu<Box as="span" _hover={{ color: 'brand.accent' }} >.</Box>
+          Dante Izuogu<Box as="span" color="rgba(57, 255, 20, 1)">.</Box>
         </Link>
         <Spacer />
         <Flex gap={8}>
