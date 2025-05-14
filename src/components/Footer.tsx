@@ -26,9 +26,9 @@ const Footer = () => {
         direction={{ base: 'column', sm: 'row' }}
         gap={{ base: 2, sm: 8 }}
       >
-        <Text color="brand.dark" fontSize="sm">
+        <Link href="mailto:dante.izuogu@proton.me" color="brand.dark" fontSize="sm" textDecoration="underline" _hover={{ color: 'rgba(57, 255, 20, 1)' }}>
           dante.izuogu@proton.me
-        </Text>
+        </Link>
         <HStack spacing={6}>
           {socialLinks.map((social) => (
             <Link
@@ -37,8 +37,8 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               color="brand.dark"
-              _hover={{ color: 'brand.medium' }}
-              className="social-link"
+              _hover={{ color: 'brand.accent' }}
+              className="no-underline"
             >
               <social.icon size={18} />
             </Link>

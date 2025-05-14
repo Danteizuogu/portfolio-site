@@ -42,11 +42,11 @@ const ProjectPanel = ({
         left="0"
         width="100%"
         height="100%"
-        bg="brand.dark"
+        bg="rgba(0, 0, 0, 0.5)"
         opacity="0"
         transition="opacity 0.3s ease"
         _hover={{
-          opacity: 0.9
+          opacity: 1
         }}
       >
         {/* Content */}
@@ -58,6 +58,7 @@ const ProjectPanel = ({
           color="white"
           textAlign="center"
           spacing={2}
+          opacity="1"
         >
           <Text fontSize="2xl" fontWeight="bold">
             {projectName}
@@ -73,6 +74,7 @@ const ProjectPanel = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 color="white"
+                opacity="1"
                 _hover={{ color: 'brand.medium' }}
               >
                 View Live
@@ -84,6 +86,7 @@ const ProjectPanel = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 color="white"
+                opacity="1"
                 _hover={{ color: 'brand.medium' }}
               >
                 View Code

@@ -14,7 +14,7 @@ const Portfolio = () => {
   const projects: Project[] = [
     {
       id: "project1",
-      imageUrl: "/images/projects/project1.jpg",
+      imageUrl: "/project1.jpg",
       projectName: "Project One",
       releaseDate: "January 2024",
       projectLink: "https://project1.com",  // Your live project URL
@@ -22,7 +22,7 @@ const Portfolio = () => {
     },
     {
       id: "project2",
-      imageUrl: "/images/projects/project2.jpg",
+      imageUrl: "/project2.jpg",
       projectName: "Project Two",
       releaseDate: "February 2024",
       projectLink: "https://project2.com",
@@ -30,12 +30,37 @@ const Portfolio = () => {
     },
     {
       id: "project3",
-      imageUrl: "/images/projects/project3.jpg",
+      imageUrl: "/project3.jpg",
       projectName: "Project Three",
       releaseDate: "March 2024",
       projectLink: "https://project3.com",
       githubLink: "https://github.com/yourusername/project3"
     }
+,
+    {
+      id: "project4",
+      imageUrl: "/project4.jpg",
+      projectName: "Project Four",
+      releaseDate: "April 2024",
+      projectLink: "https://project4.com",
+      githubLink: "https://github.com/yourusername/project4"
+    },
+    {
+      id: "project5",
+      imageUrl: "/project5.jpg",
+      projectName: "Project Five",
+      releaseDate: "May 2024",
+      projectLink: "https://project5.com",
+      githubLink: "https://github.com/yourusername/project5"
+    },
+    {
+      id: "project6",
+      imageUrl: "/project6.jpg",
+      projectName: "Project Six",
+      releaseDate: "June 2024",
+      projectLink: "https://project6.com",
+      githubLink: "https://github.com/yourusername/project6"
+    },
   ]
 
   return (
