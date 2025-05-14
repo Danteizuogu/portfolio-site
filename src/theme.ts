@@ -29,7 +29,7 @@ const theme = extendTheme({
         padding: 0,
         overflowX: 'hidden',
       },
-      a: {
+      'a': {
         color: 'brand.text',
         textDecoration: 'underline',
         textDecorationColor: 'brand.accent',
@@ -48,7 +48,7 @@ const theme = extendTheme({
         minHeight: '100vh',
         width: '100%',
       },
-      'a:not(.social-link)': {
+      'a, a:not(.social-link)': {
         position: 'relative',
         textDecoration: 'none',
         '&::after': {
@@ -58,7 +58,7 @@ const theme = extendTheme({
           height: '2px',
           bottom: '-2px',
           left: '0',
-          backgroundColor: 'var(--chakra-colors-brand-medium)',
+          backgroundColor: 'var(--chakra-colors-brand-accent)',
           transition: 'width 0.3s ease-in-out',
         },
         '&:hover::after': {

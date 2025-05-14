@@ -17,7 +17,7 @@ const Home = () => {
           fontWeight="bold"
           fontFamily="heading"
         >
-          Building Digital <Box as="span" color="brand.medium">Experiences</Box>
+          Building Digital Tools.
         </Heading>
         
         <Text fontSize="xl" maxW="600px" lineHeight="1.6">
@@ -30,7 +30,7 @@ const Home = () => {
             <Box 
               p={4} 
               border="2px" 
-              borderColor="brand.medium" 
+              borderColor="brand.text" 
               borderRadius="md"
               _hover={{ bg: 'brand.light', borderColor: 'brand.accent', color: 'brand.accent' }}
               transition="all 0.2s"
@@ -44,7 +44,7 @@ const Home = () => {
               border="2px" 
               borderColor="brand.dark" 
               borderRadius="md"
-              _hover={{ bg: 'brand.light', borderColor: 'brand.accent', color: 'brand.accent' }}
+              _hover={{borderColor: 'brand.accent', color: 'brand.accent' }}
               transition="all 0.2s"
             >
               <Text>Contact Me</Text>

@@ -197,9 +197,10 @@ const Contact = () => {
           <VStack spacing={24} align="start">
             <Box>
               <Text fontSize="lg" fontWeight="medium" mb={2}>Connect with me</Text>
-              <Text color="brand.dark" fontSize="md">
-                dante.izuogu@proton.me
-              </Text>
+              <Link href="mailto:dante.izuogu@proton.me" color="brand.dark" fontSize="md" _hover={{ textDecoration: 'none' }} style={{ position: 'relative', textDecoration: 'none' }}>
+                <Box as="span" position="relative" _after={{ content: '""', position: 'absolute', width: '0', height: '2px', bottom: '-2px', left: '0', backgroundColor: 'var(--chakra-colors-brand-medium)', transition: 'width 0.3s ease-in-out' }} _hover={{ _after: { width: '100%' } }}>
+                Dante Izuogu</Box>
+              </Link>
             </Box>
             
             <VStack spacing={6} align="start" w="100%">
