@@ -5,7 +5,7 @@ const AnimatedBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gridSpacing = 20; // Spacing between nodes
   const nodeRadius = 1.5; // Radius of each node
-  const nodeColor = 'rgba(128, 128, 128, 0.5)';
+  const nodeColor = 'rgba(128, 128, 128, 0.4)';
   const highlightColor = 'rgba(57, 255, 20,'; // Base highlight color
   const highlightRadius = 95; // Radius around cursor to highlight nodes
   const minOpacity = 0.3; // Minimum opacity for highlighted nodes
@@ -25,9 +25,15 @@ const AnimatedBackground = () => {
     for (let x = 0; x < width; x += gridSpacing) {
       for (let y = 0; y < height; y += gridSpacing) {
         const distance = Math.hypot(x - mouseX, y - mouseY);
-        const opacity = Math.max(minOpacity, 1 - distance / highlightRadius);
+        let opacity = Math.max(minOpacity, 1 - distance / highlightRadius);
+        if (distance < highlightRadius) {
+          opacity = Math.min(1, opacity + 0.05); // Increase opacity when close to mouse
+          ctx.fillStyle = `${highlightColor} ${opacity})`;
+        } else {
+          opacity = Math.max(minOpacity, opacity - 0.000001); // Decrease opacity slowly for memory effect
+          ctx.fillStyle = `${nodeColor}`;
+        }
         ctx.beginPath();
-        ctx.fillStyle = distance < highlightRadius ? `${highlightColor} ${opacity})` : nodeColor;
         ctx.arc(x, y, nodeRadius, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -37,8 +43,11 @@ const AnimatedBackground = () => {
   };
 
   const handleMouseMove = (event: MouseEvent) => {
-    mouseX = event.clientX;
-    mouseY = event.clientY + window.scrollY;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    mouseX = event.clientX - rect.left;
+    mouseY = event.clientY - rect.top;
   };
 
   useEffect(() => {
