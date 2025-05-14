@@ -3,11 +3,12 @@ import { useEffect, useRef } from 'react';
 
 const AnimatedBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const gridSpacing = 30; // Spacing between nodes
-  const nodeRadius = 3; // Radius of each node
+  const gridSpacing = 20; // Spacing between nodes
+  const nodeRadius = 1.5; // Radius of each node
   const nodeColor = 'rgba(128, 128, 128, 0.5)';
   const highlightColor = 'rgba(57, 255, 20,'; // Base highlight color
-  const highlightRadius = 100; // Radius around cursor to highlight nodes
+  const highlightRadius = 95; // Radius around cursor to highlight nodes
+  const minOpacity = 0.3; // Minimum opacity for highlighted nodes
 
   let mouseX = 0;
   let mouseY = 0;
@@ -24,7 +25,7 @@ const AnimatedBackground = () => {
     for (let x = 0; x < width; x += gridSpacing) {
       for (let y = 0; y < height; y += gridSpacing) {
         const distance = Math.hypot(x - mouseX, y - mouseY);
-        const opacity = Math.max(0, 1 - distance / highlightRadius);
+        const opacity = Math.max(minOpacity, 1 - distance / highlightRadius);
         ctx.beginPath();
         ctx.fillStyle = distance < highlightRadius ? `${highlightColor} ${opacity})` : nodeColor;
         ctx.arc(x, y, nodeRadius, 0, Math.PI * 2);
