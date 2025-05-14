@@ -20,6 +20,12 @@ const theme = extendTheme({
   },
   styles: {
     global: {
+      html: {
+        height: '100%',
+        width: '100%',
+        margin: 0,
+        padding: 0,
+      },
       body: {
         bg: 'brand.background',
         color: 'brand.text',
@@ -29,28 +35,19 @@ const theme = extendTheme({
         padding: 0,
         overflowX: 'hidden',
       },
-      'a': {
-        color: 'brand.text',
-        textDecoration: 'underline',
-        textDecorationColor: 'brand.accent',
-        _hover: {
-          color: 'brand.accent',
-          textDecoration: 'none',
-        },
-      },
-      html: {
-        height: '100%',
-        width: '100%',
-        margin: 0,
-        padding: 0,
-      },
       '#root': {
         minHeight: '100vh',
         width: '100%',
       },
-      'a, a:not(.social-link)': {
+
+      // Default link styles without underline
+      'a:not(.header-link):not(.portfolio-link):not(.no-underline):not([data-no-underline])': {
         position: 'relative',
-        textDecoration: 'none',
+        color: 'brand.text',
+        textDecoration: 'none !important',
+        _hover: {
+          color: 'brand.accent',
+        },
         '&::after': {
           content: '""',
           position: 'absolute',
@@ -65,14 +62,19 @@ const theme = extendTheme({
           width: '100%',
         },
       },
-      '.social-link': {
+
+      // Excluded links (icons, buttons, etc.)
+      '.no-underline, [data-no-underline]': {
         textDecoration: 'none !important',
-        '&:hover': {
+        '&::after': {
+          display: 'none !important',
+        },
+        _hover: {
           textDecoration: 'none !important',
         },
       },
     },
   },
-})
+});
 
-export default theme 
+export default theme;

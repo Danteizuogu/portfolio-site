@@ -199,7 +199,7 @@ const Contact = () => {
               <Text fontSize="lg" fontWeight="medium" mb={2}>Connect with me</Text>
               <Link href="mailto:dante.izuogu@proton.me" color="brand.dark" fontSize="md" _hover={{ textDecoration: 'none' }} style={{ position: 'relative', textDecoration: 'none' }}>
                 <Box as="span" position="relative" _after={{ content: '""', position: 'absolute', width: '0', height: '2px', bottom: '-2px', left: '0', backgroundColor: 'var(--chakra-colors-brand-medium)', transition: 'width 0.3s ease-in-out' }} _hover={{ _after: { width: '100%' } }}>
-                Dante Izuogu</Box>
+             dante.izuogu@proton.me</Box>
               </Link>
             </Box>
             
@@ -210,12 +210,12 @@ const Contact = () => {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  color="brand.dark"
-                  _hover={{ color: 'brand.medium' }}
+                  color="brand.text"
+                  _hover={{ color: 'brand.accent' }}
                   display="flex"
                   alignItems="center"
                   gap={3}
-                  className="social-link"
+                  className="no-underline"
                 >
                   <social.icon size={24} />
                   <Box>

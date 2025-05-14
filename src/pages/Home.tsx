@@ -26,10 +26,11 @@ const Home = () => {
         </Text>
 
         <HStack spacing={4} pt={4}>
-          <Link href="/portfolio" style={{ textDecoration: 'none' }}>
+          <Link href="/portfolio" className="no-underline" style={{ textDecoration: 'none' }}>
             <Box 
               p={4} 
               border="2px" 
+              className="no-underline"
               borderColor="brand.text" 
               borderRadius="md"
               _hover={{ bg: 'brand.light', borderColor: 'brand.accent', color: 'brand.accent' }}
@@ -38,11 +39,12 @@ const Home = () => {
               <Text>View Projects</Text>
             </Box>
           </Link>
-          <Link href="/contact" style={{ textDecoration: 'none' }}>
+          <Link href="/contact" className="no-underline" style={{ textDecoration: 'none' }}>
             <Box 
               p={4} 
               border="2px" 
               borderColor="brand.dark" 
+              className="no-underline"
               borderRadius="md"
               _hover={{borderColor: 'brand.accent', color: 'brand.accent' }}
               transition="all 0.2s"
