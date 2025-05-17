@@ -115,7 +115,7 @@ const Contact = () => {
   ]
 
   return (
-    <Box py={8}>
+    <Box py={8} pt="100px">
       <Heading color="brand.dark" mb={8}>Contact Me</Heading>
       
       <Grid templateColumns={{ base: '1fr', md: '1fr 1px 1fr' }} gap={12}>

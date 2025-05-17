@@ -1,17 +1,19 @@
 import { Box, Flex, Link, Spacer } from '@chakra-ui/react'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
 
 const Navbar = () => {
+  const location = useLocation()
+
   return (
     <Box 
       as="nav" 
       bg="transparent" 
       px={8} 
       py={4}
-      position="fixed"
-      top="0"
-      left="0"
-      right="0"
+      position={location.pathname === '/' ? 'fixed' : 'static'}
+      top={location.pathname === '/' ? '0' : undefined}
+      left={location.pathname === '/' ? '0' : undefined}
+      right={location.pathname === '/' ? '0' : undefined}
       zIndex="2"
 
     >

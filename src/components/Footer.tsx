@@ -1,7 +1,9 @@
 import { Box, Flex, HStack, Link, Text } from '@chakra-ui/react'
+import { useLocation } from 'react-router-dom'
 import { FaXTwitter, FaLinkedin, FaReddit, FaGithub, FaQuora, FaFacebook } from 'react-icons/fa6'
 
 const Footer = () => {
+  const location = useLocation()
   const socialLinks = [
     { icon: FaXTwitter, url: 'https://twitter.com/yourusername', label: 'Twitter' },
     { icon: FaLinkedin, url: 'https://linkedin.com/in/yourusername', label: 'LinkedIn' },
@@ -19,11 +21,11 @@ const Footer = () => {
       py={3} 
       borderTop="1px" 
       borderColor="brand.light"
-      position="fixed"
-      bottom="0"
-      left="0"
-      right="0"
-      zIndex="1"
+      position={location.pathname === '/' ? 'fixed' : 'static'}
+      bottom={location.pathname === '/' ? '0' : undefined}
+      left={location.pathname === '/' ? '0' : undefined}
+      right={location.pathname === '/' ? '0' : undefined}
+      zIndex={1}
     >
       <Flex 
         align="center" 
