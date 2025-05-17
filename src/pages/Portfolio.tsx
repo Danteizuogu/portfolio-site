@@ -65,7 +65,7 @@ const Portfolio = () => {
 
   return (
     <Box py={8}>
-      <Heading color="brand.dark" mb={8}>My Projects</Heading>
+      <Heading color="brand.text" mb={8} pt="100px">My Projects</Heading>
       
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
         {projects.map((project) => (

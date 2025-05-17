@@ -6,7 +6,7 @@ const Home = () => {
       h="100vh" 
       display="flex" 
       alignItems="flex-start"
-      pt="125px" // Remove padding to position content at the top
+      pt="200px" // Remove padding to position content at the top
       overflow="hidden"
       style={{
         overflowY: 'hidden',

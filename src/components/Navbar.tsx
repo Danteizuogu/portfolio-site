@@ -8,6 +8,11 @@ const Navbar = () => {
       bg="transparent" 
       px={8} 
       py={4}
+      position="fixed"
+      top="0"
+      left="0"
+      right="0"
+      zIndex="2"
 
     >
       <Flex align="center">
