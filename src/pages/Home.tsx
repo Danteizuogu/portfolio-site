@@ -3,9 +3,15 @@ import { Box, Heading, Text, Flex, VStack, HStack, Link } from '@chakra-ui/react
 const Home = () => {
   return (
     <Box 
-      minH="calc(100vh - 80px)" 
+      h="100vh" 
       display="flex" 
-      alignItems="center"
+      alignItems="flex-start"
+      pt="125px" // Remove padding to position content at the top
+      overflow="hidden"
+      style={{
+        overflowY: 'hidden',
+        overscrollBehavior: 'none'
+      }}
     >
       <VStack 
         spacing={8} 

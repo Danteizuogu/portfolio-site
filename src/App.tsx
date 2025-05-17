@@ -27,7 +27,6 @@ function App() {
         style={{
           position: 'relative',
           zIndex: 1,
-          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column'
         }}

@@ -19,6 +19,11 @@ const Footer = () => {
       py={3} 
       borderTop="1px" 
       borderColor="brand.light"
+      position="fixed"
+      bottom="0"
+      left="0"
+      right="0"
+      zIndex="1"
     >
       <Flex 
         align="center" 
