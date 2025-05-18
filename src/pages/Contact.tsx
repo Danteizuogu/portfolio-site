@@ -1,171 +1,278 @@
-import { useState } from 'react'
-import { Box, Heading, VStack, Input, Textarea, Button, useToast, FormControl, FormLabel, FormErrorMessage, Grid, GridItem, Text, Divider, HStack, Link } from '@chakra-ui/react'
-import { FaXTwitter, FaLinkedin, FaReddit, FaGithub, FaQuora, FaFacebook } from 'react-icons/fa6'
-import emailjs from '@emailjs/browser'
+import { useState, useEffect } from 'react';
+import {
+  Box,
+  Heading,
+  Grid,
+  GridItem,
+  VStack,
+  FormControl,
+  FormLabel,
+  Input,
+  Textarea,
+  Button,
+  FormErrorMessage,
+  useToast,
+  Text,
+  Divider,
+  HStack,
+  Link,
+  Icon,
+  Flex,
+} from '@chakra-ui/react';
+import { FaPhone, FaEnvelope, FaXTwitter, FaLinkedin, FaGithub } from 'react-icons/fa6';
+import { FaLocationDot } from 'react-icons/fa6';
+import emailjs from '@emailjs/browser';
+
+// Initialize EmailJS with your public key from environment variables
+emailjs.init({
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+});
+
+interface FormValues {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  subject?: string;
+  message?: string;
+}
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const [formValues, setFormValues] = useState<FormValues>({
     name: '',
     email: '',
-    message: ''
-  })
-  const [errors, setErrors] = useState({
-    name: '',
-    email: '',
-    message: ''
-  })
-  const [isLoading, setIsLoading] = useState(false)
-  const toast = useToast()
+    subject: '',
+    message: '',
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [cooldownActive, setCooldownActive] = useState<boolean>(false);
+  const [cooldownTime, setCooldownTime] = useState<number>(0);
+  const toast = useToast();
+
+  // Check if cooldown is active on component mount
+  useEffect(() => {
+    const lastSubmissionTime = localStorage.getItem('lastFormSubmission');
+    if (lastSubmissionTime) {
+      const currentTime = new Date().getTime();
+      const timeDiff = currentTime - parseInt(lastSubmissionTime);
+      const tenMinutesInMs = 10 * 60 * 1000;
+      
+      if (timeDiff < tenMinutesInMs) {
+        setCooldownActive(true);
+        const remainingTime = Math.ceil((tenMinutesInMs - timeDiff) / 1000 / 60);
+        setCooldownTime(remainingTime);
+        
+        // Set a timeout to clear the cooldown
+        const timeoutId = setTimeout(() => {
+          setCooldownActive(false);
+          setCooldownTime(0);
+        }, tenMinutesInMs - timeDiff);
+        
+        return () => clearTimeout(timeoutId);
+      }
+    }
+  }, []);
 
   const validateForm = () => {
-    let isValid = true
-    const newErrors = {
-      name: '',
-      email: '',
-      message: ''
+    const newErrors: FormErrors = {};
+    
+    if (!formValues.name.trim()) {
+      newErrors.name = 'Name is required';
     }
-
-    if (!formData.name.trim()) {
-      newErrors.name = 'Please enter your name'
-      isValid = false
+    
+    if (!formValues.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email)) {
+      newErrors.email = 'Invalid email format';
     }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Please enter your email'
-      isValid = false
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address'
-      isValid = false
+    
+    if (!formValues.subject.trim()) {
+      newErrors.subject = 'Subject is required';
     }
-
-    if (!formData.message.trim()) {
-      newErrors.message = 'Please enter your message'
-      isValid = false
-    } else if (formData.message.length < 10) {
-      newErrors.message = 'Message must be at least 10 characters long'
-      isValid = false
+    
+    if (!formValues.message.trim()) {
+      newErrors.message = 'Message is required';
     }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-    setErrors(newErrors)
-    return isValid
-  }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormValues(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     
-    if (!validateForm()) {
-      return
-    }
-
-    setIsLoading(true)
-
-    try {
-      await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        {
-          to_email: 'dante.izuogu@proton.me',
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-        },
-        'YOUR_PUBLIC_KEY'
-      )
-
+    if (cooldownActive) {
       toast({
-        title: 'Message sent successfully!',
-        description: "I'll get back to you as soon as possible.",
+        title: 'Please wait',
+        description: `You can submit another message in ${cooldownTime} minutes.`,
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+    
+    if (!validateForm()) return;
+    
+    setIsLoading(true);
+    
+    try {
+      // Send email using EmailJS with environment variables
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formValues.name,
+          from_email: formValues.email,
+          subject: formValues.subject,
+          message: formValues.message,
+          to_email: 'dante.izuogu@proton.me',
+        }
+      );
+      
+      // Set cooldown
+      localStorage.setItem('lastFormSubmission', new Date().getTime().toString());
+      setCooldownActive(true);
+      setCooldownTime(10);
+      
+      // Reset form
+      setFormValues({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+      });
+      
+      toast({
+        title: 'Message sent!',
+        description: 'Your message has been sent successfully.',
         status: 'success',
         duration: 5000,
         isClosable: true,
-      })
-
-      setFormData({ name: '', email: '', message: '' })
-      setErrors({ name: '', email: '', message: '' })
-    } catch (error) {
-      let errorMessage = "Something went wrong. Please try again."
+      });
       
-      if (error instanceof Error) {
-        if (error.message.includes('network')) {
-          errorMessage = "Network error. Please check your internet connection."
-        } else if (error.message.includes('service')) {
-          errorMessage = "Email service error. Please try again later."
-        }
-      }
-
+      // Set a timeout to clear the cooldown after 10 minutes
+      setTimeout(() => {
+        setCooldownActive(false);
+        setCooldownTime(0);
+      }, 10 * 60 * 1000);
+      
+    } catch (error) {
+      console.error('Error sending email:', error);
       toast({
-        title: 'Failed to send message',
-        description: errorMessage,
+        title: 'Error',
+        description: 'There was an error sending your message. Please try again later.',
         status: 'error',
         duration: 5000,
         isClosable: true,
-      })
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
+
+  const contactInfo = [
+    {
+      icon: FaEnvelope,
+      label: 'Email',
+      value: 'dante.izuogu@proton.me',
+      link: 'mailto:dante.izuogu@proton.me'
+    },
+    {
+      icon: FaPhone,
+      label: 'Phone',
+      value: '+44 123 456 7890',
+      link: 'tel:+441234567890'
+    },
+    {
+      icon: FaLocationDot,
+      label: 'Location',
+      value: 'London, United Kingdom',
+      link: null
+    }
+  ];
 
   const socialLinks = [
-    { icon: FaXTwitter, url: 'https://twitter.com/yourusername', label: 'Twitter', username: '@yourusername' },
-    { icon: FaLinkedin, url: 'https://linkedin.com/in/yourusername', label: 'LinkedIn', username: 'yourusername' },
-    { icon: FaReddit, url: 'https://reddit.com/user/yourusername', label: 'Reddit', username: 'u/yourusername' },
-    { icon: FaGithub, url: 'https://github.com/yourusername', label: 'GitHub', username: '@yourusername' },
-    { icon: FaQuora, url: 'https://quora.com/profile/yourusername', label: 'Quora', username: 'yourusername' },
-    { icon: FaFacebook, url: 'https://facebook.com/yourusername', label: 'Facebook', username: 'yourusername' }
-  ]
+    { icon: FaXTwitter, url: 'https://twitter.com/yourusername', label: 'Twitter' },
+    { icon: FaLinkedin, url: 'https://linkedin.com/in/yourusername', label: 'LinkedIn' },
+    { icon: FaGithub, url: 'https://github.com/yourusername', label: 'GitHub' },
+  ];
 
   return (
-    <Box py={8} pt="100px">
-      <Heading color="brand.dark" mb={8}>Contact Me</Heading>
+    <Box py={8} pt="75px">
+      <Heading color="brand.text" mb={8}>Contact Me</Heading>
       
       <Grid templateColumns={{ base: '1fr', md: '1fr 1px 1fr' }} gap={12}>
         {/* Contact Form */}
         <GridItem>
           <form onSubmit={handleSubmit}>
-            <VStack spacing={6}>
-              <FormControl isRequired isInvalid={!!errors.name}>
+            <VStack spacing={4} align="stretch">
+              <FormControl isInvalid={!!errors.name}>
                 <FormLabel>Name</FormLabel>
                 <Input
-                  value={formData.name}
-                  onChange={(e) => {
-                    setFormData({ ...formData, name: e.target.value })
-                    setErrors({ ...errors, name: '' })
-                  }}
-                  borderColor="brand.medium"
-                  _hover={{ borderColor: 'brand.dark' }}
-                  _focus={{ borderColor: 'brand.accent', boxShadow: '0 0 0 1px var(--chakra-colors-brand-accent)' }}
+                  type="text"
+                  name="name"
+                  value={formValues.name}
+                  onChange={handleChange}
+                  borderColor="brand.light"
+                  _hover={{ borderColor: 'brand.accent' }}
+                  _focus={{ borderColor: 'brand.accent', boxShadow: 'none' }}
                 />
                 <FormErrorMessage>{errors.name}</FormErrorMessage>
               </FormControl>
 
-              <FormControl isRequired isInvalid={!!errors.email}>
+              <FormControl isInvalid={!!errors.email}>
                 <FormLabel>Email</FormLabel>
                 <Input
                   type="email"
-                  value={formData.email}
-                  onChange={(e) => {
-                    setFormData({ ...formData, email: e.target.value })
-                    setErrors({ ...errors, email: '' })
-                  }}
-                  borderColor="brand.medium"
-                  _hover={{ borderColor: 'brand.dark' }}
-                  _focus={{ borderColor: 'brand.accent', boxShadow: '0 0 0 1px var(--chakra-colors-brand-accent)' }}
+                  name="email"
+                  value={formValues.email}
+                  onChange={handleChange}
+                  borderColor="brand.light"
+                  _hover={{ borderColor: 'brand.accent' }}
+                  _focus={{ borderColor: 'brand.accent', boxShadow: 'none' }}
                 />
                 <FormErrorMessage>{errors.email}</FormErrorMessage>
               </FormControl>
 
-              <FormControl isRequired isInvalid={!!errors.message}>
+              <FormControl isInvalid={!!errors.subject}>
+                <FormLabel>Subject</FormLabel>
+                <Input
+                  type="text"
+                  name="subject"
+                  value={formValues.subject}
+                  onChange={handleChange}
+                  borderColor="brand.light"
+                  _hover={{ borderColor: 'brand.accent' }}
+                  _focus={{ borderColor: 'brand.accent', boxShadow: 'none' }}
+                />
+                <FormErrorMessage>{errors.subject}</FormErrorMessage>
+              </FormControl>
+
+              <FormControl isInvalid={!!errors.message}>
                 <FormLabel>Message</FormLabel>
                 <Textarea
-                  value={formData.message}
-                  onChange={(e) => {
-                    setFormData({ ...formData, message: e.target.value })
-                    setErrors({ ...errors, message: '' })
-                  }}
+                  name="message"
+                  value={formValues.message}
+                  onChange={handleChange}
                   rows={6}
-                  borderColor="brand.medium"
-                  _hover={{ borderColor: 'brand.dark' }}
-                  _focus={{ borderColor: 'brand.accent', boxShadow: '0 0 0 1px var(--chakra-colors-brand-accent)' }}
+                  borderColor="brand.light"
+                  _hover={{ borderColor: 'brand.accent' }}
+                  _focus={{ borderColor: 'brand.accent', boxShadow: 'none' }}
                 />
                 <FormErrorMessage>{errors.message}</FormErrorMessage>
               </FormControl>
@@ -175,14 +282,23 @@ const Contact = () => {
                 isLoading={isLoading}
                 p={4}
                 border="2px"
-                borderColor="brand.dark"
+                bg="none"
+                textColor="brand.text"
+                borderColor="brand.text"
                 borderRadius="md"
-                _hover={{ bg: 'brand.light', borderColor: 'brand.accent', color: 'brand.accent' }}
+                _hover={{ borderColor: 'brand.accent', color: 'brand.accent' }}
                 transition="all 0.2s"
                 w="full"
+                isDisabled={cooldownActive}
               >
-                Send Message
+                {cooldownActive ? `Wait ${cooldownTime} minutes` : 'Send Message'}
               </Button>
+              
+              {cooldownActive && (
+                <Text fontSize="sm" color="brand.accent">
+                  You can submit another message in {cooldownTime} minutes.
+                </Text>
+              )}
             </VStack>
           </form>
         </GridItem>
@@ -192,45 +308,57 @@ const Contact = () => {
           <Divider orientation="vertical" borderColor="brand.light" />
         </GridItem>
 
-        {/* Social Links */}
+        {/* Contact Information */}
         <GridItem>
-          <VStack spacing={24} align="start">
+          <VStack spacing={8} align="start">
             <Box>
-              <Text fontSize="lg" fontWeight="medium" mb={2}>Connect with me</Text>
-              <Link href="mailto:dante.izuogu@proton.me" color="brand.dark" fontSize="md" _hover={{ textDecoration: 'none' }} style={{ position: 'relative', textDecoration: 'none' }}>
-                <Box as="span" position="relative" _after={{ content: '""', position: 'absolute', width: '0', height: '2px', bottom: '-2px', left: '0', backgroundColor: 'var(--chakra-colors-brand-medium)', transition: 'width 0.3s ease-in-out' }} _hover={{ _after: { width: '100%' } }}>
-             dante.izuogu@proton.me</Box>
-              </Link>
+              <Heading size="md" mb={4} color="brand.text">Contact Information</Heading>
+              <VStack spacing={4} align="start">
+                {contactInfo.map((item, index) => (
+                  <HStack key={index} spacing={4}>
+                    <Icon as={item.icon} boxSize={5} color="brand.accent" />
+                    <Box>
+                      <Text fontWeight="bold" color="brand.text">{item.label}</Text>
+                      {item.link ? (
+                        <Link href={item.link} color="brand.text" _hover={{ color: 'brand.accent' }}>
+                          {item.value}
+                        </Link>
+                      ) : (
+                        <Text color="brand.text">{item.value}</Text>
+                      )}
+                    </Box>
+                  </HStack>
+                ))}
+              </VStack>
             </Box>
-            
-            <VStack spacing={6} align="start" w="100%">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.label}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  color="brand.text"
-                  _hover={{ color: 'brand.accent' }}
-                  display="flex"
-                  alignItems="center"
-                  gap={3}
-                  className="no-underline"
-                >
-                  <social.icon size={24} />
-                  <Box>
-                    <Text fontSize="sm" color="brand.dark" fontWeight="medium">
-                      {social.username}
-                    </Text>
-                  </Box>
-                </Link>
-              ))}
-            </VStack>
+
+            <Box>
+              <Heading size="md" mb={4} color="brand.text">Follow Me</Heading>
+              <Flex gap={4}>
+                {socialLinks.map((social, index) => (
+                  <Link
+                    key={index}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                  >
+                    <Icon 
+                      as={social.icon} 
+                      boxSize={6} 
+                      color="brand.text"
+                      _hover={{ color: 'brand.accent' }}
+                      transition="color 0.2s"
+                    />
+                  </Link>
+                ))}
+              </Flex>
+            </Box>
           </VStack>
         </GridItem>
       </Grid>
     </Box>
-  )
-}
+  );
+};
 
-export default Contact 
+export default Contact;
