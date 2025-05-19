@@ -1,5 +1,5 @@
 # React + TypeScript + Vite
-19/5 commit
+19/5/25 commit
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
