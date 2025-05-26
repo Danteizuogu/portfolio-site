@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Box, Heading, VStack, Input, Textarea, Button, useToast, FormControl, FormLabel, FormErrorMessage, Grid, GridItem, Text, Divider, HStack, Link } from '@chakra-ui/react'
 import { FaXTwitter, FaLinkedin, FaReddit, FaGithub, FaQuora, FaFacebook } from 'react-icons/fa6'
-import emailjs from '@emailjs/browser'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -60,17 +59,21 @@ const Contact = () => {
     setIsLoading(true)
 
     try {
-      await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        {
-          to_email: 'dante.izuogu@proton.me',
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
+      const response = await fetch('https://formspree.io/f/xeogbrdp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
         },
-        'YOUR_PUBLIC_KEY'
-      )
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`Form submission failed: ${response.status}`)
+      }
 
       toast({
         title: 'Message sent successfully!',
@@ -88,8 +91,8 @@ const Contact = () => {
       if (error instanceof Error) {
         if (error.message.includes('network')) {
           errorMessage = "Network error. Please check your internet connection."
-        } else if (error.message.includes('service')) {
-          errorMessage = "Email service error. Please try again later."
+        } else if (error.message.includes('form')) {
+          errorMessage = "Form submission error. Please try again later."
         }
       }
 
