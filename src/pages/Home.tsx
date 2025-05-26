@@ -27,8 +27,7 @@ const Home = () => {
         </Heading>
         
         <Text fontSize="xl" maxW="600px" lineHeight="1.6">
-          Full-stack developer crafting elegant solutions to complex problems.
-          Specializing in modern web technologies and user-centric design.
+          Year 12 student with a passion for technology and a love for problem-solving. Studying Maths and Computer Science at A level.
         </Text>
 
         <HStack spacing={4} pt={4}>
